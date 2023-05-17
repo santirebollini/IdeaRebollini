@@ -36,6 +36,6 @@ CREATE TABLE Corredores (
     id_instrumento INT,
     foreign key (id_profesor) references Profesores(id),
     foreign key (id_corredor) references Corredores(id),
-	foreign key (id_asesor) references Asesores(id),
+    foreign key (id_asesor) references Asesores(id),
     foreign key (id_instrumento) references DatosMercado(id)
 );
