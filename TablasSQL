@@ -40,3 +40,12 @@ CREATE TABLE Usuarios (
     FOREIGN KEY (id_asesor) REFERENCES Asesores(id_asesor),
     FOREIGN KEY (id_instrumento) REFERENCES DatosMercado(id_instrumento)
 );
+
+-- Creo una tabla para manejar la relación mucho a muchos entre Corredores y DatosMercado 
+
+CREATE TABLE Corredores_DatosMercado (
+  id_corredor INT,
+  id_instrumento INT,
+  FOREIGN KEY (id_corredor) REFERENCES Corredores(id),
+  FOREIGN KEY (id_instrumento) REFERENCES DatosMercado(id)
+);
