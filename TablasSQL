@@ -1,52 +1,42 @@
 CREATE TABLE Profesores (
-	id_profesor int auto_increment PRIMARY KEY,
-	nombre varchar (50),
-    mail varchar(100),
-    dias_de_clase date
+    id_profesor INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50),
+    mail VARCHAR(100),
+    dias_de_clase DATE
 );
- 
+
 CREATE TABLE Asesores (
-	id_asesor int auto_increment PRIMARY KEY,
-	nombre varchar (50) not null,
-    mail varchar(100)
+    id_asesor INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    mail VARCHAR(100)
 );
+
 CREATE TABLE DatosMercado (
-	id_instrumento int auto_increment PRIMARY KEY,
-	pr_MEP int not null,
-    pr_acciones int not null,
-    pr_bonos int not null
+    id_instrumento INT AUTO_INCREMENT PRIMARY KEY,
+    pr_MEP INT NOT NULL,
+    pr_acciones INT NOT NULL,
+    pr_bonos INT NOT NULL
 );
-  
+
 CREATE TABLE Corredores (
-	id_corredor int auto_increment PRIMARY KEY,
-	id_instrumento INT,
-	nombre varchar (50),
-    mail varchar(100),
-    foreign key (id_instrumento) references DatosMercado(id)
+    id_corredor INT AUTO_INCREMENT PRIMARY KEY,
+    id_instrumento INT,
+    nombre VARCHAR(50),
+    mail VARCHAR(100),
+    FOREIGN KEY (id_instrumento) REFERENCES DatosMercado(id_instrumento)
 );
- 
- CREATE TABLE Usuarios (
-	id_usuario int auto_increment PRIMARY KEY,
-	nombre varchar (50),
-    mail varchar(100),
-    fecha_apertura date, 
+
+CREATE TABLE Usuarios (
+    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50),
+    mail VARCHAR(100),
+    fecha_apertura DATE,
     id_profesor INT,
     id_corredor INT,
     id_asesor INT,
     id_instrumento INT,
-    foreign key (id_profesor) references Profesores(id),
-    foreign key (id_corredor) references Corredores(id),
-    foreign key (id_asesor) references Asesores(id),
-    foreign key (id_instrumento) references DatosMercado(id)
+    FOREIGN KEY (id_profesor) REFERENCES Profesores(id_profesor),
+    FOREIGN KEY (id_corredor) REFERENCES Corredores(id_corredor),
+    FOREIGN KEY (id_asesor) REFERENCES Asesores(id_asesor),
+    FOREIGN KEY (id_instrumento) REFERENCES DatosMercado(id_instrumento)
 );
-
--- Creo una tabla para manejar la relación mucho a muchos entre Corredores y DatosMercado 
-
-CREATE TABLE Corredores_DatosMercado (
-  id_corredor INT,
-  id_instrumento INT,
-  FOREIGN KEY (id_corredor) REFERENCES Corredores(id),
-  FOREIGN KEY (id_instrumento) REFERENCES DatosMercado(id)
-);
-
-
