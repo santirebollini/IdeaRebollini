@@ -48,8 +48,8 @@ CREATE TABLE Usuarios (
 CREATE TABLE Corredores_DatosMercado (
   id_corredor INT,
   id_instrumento INT,
-  FOREIGN KEY (id_corredor) REFERENCES Corredores(id),
-  FOREIGN KEY (id_instrumento) REFERENCES DatosMercado(id)
+  FOREIGN KEY (id_corredor) REFERENCES Corredores(id_corredor),
+  FOREIGN KEY (id_instrumento) REFERENCES DatosMercado(id_instrumento)
 );
 
 -- Creo una tabla para manejar la relación mucho a muchos entre Usuarios y DatosMercado 
@@ -57,8 +57,7 @@ CREATE TABLE Corredores_DatosMercado (
 CREATE TABLE Usuarios_DatosMercado (
   id_usuario INT,
   id_instrumento INT,
-  FOREIGN KEY (id_usuario) REFERENCES Usuarios(id),
-  FOREIGN KEY (id_instrumento) REFERENCES DatosMercado(id)
+  FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario),
+  FOREIGN KEY (id_instrumento) REFERENCES DatosMercado(id_instrumento)
 );
 
--- No termine de entender la correción " las últimas FK del script, tienen mal el id. "
