@@ -1,3 +1,5 @@
+CREATE DATABASE Manolo;
+
 CREATE TABLE Profesores (
     id_profesor INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50),
@@ -49,3 +51,14 @@ CREATE TABLE Corredores_DatosMercado (
   FOREIGN KEY (id_corredor) REFERENCES Corredores(id),
   FOREIGN KEY (id_instrumento) REFERENCES DatosMercado(id)
 );
+
+-- Creo una tabla para manejar la relación mucho a muchos entre Usuarios y DatosMercado 
+
+CREATE TABLE Usuarios_DatosMercado (
+  id_usuario INT,
+  id_instrumento INT,
+  FOREIGN KEY (id_usuario) REFERENCES Usuarios(id),
+  FOREIGN KEY (id_instrumento) REFERENCES DatosMercado(id)
+);
+
+-- No termine de entender la correción " las últimas FK del script, tienen mal el id. "
