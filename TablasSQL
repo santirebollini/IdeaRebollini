@@ -46,6 +46,7 @@ CREATE TABLE Usuarios (
 -- Creo una tabla para manejar la relación mucho a muchos entre Corredores y DatosMercado 
 
 CREATE TABLE Corredores_DatosMercado (
+  id_corredor_instrumento INT AUTO_INCREMENT PRIMARY KEY,
   id_corredor INT,
   id_instrumento INT,
   FOREIGN KEY (id_corredor) REFERENCES Corredores(id_corredor),
@@ -55,6 +56,7 @@ CREATE TABLE Corredores_DatosMercado (
 -- Creo una tabla para manejar la relación mucho a muchos entre Usuarios y DatosMercado 
 
 CREATE TABLE Usuarios_DatosMercado (
+  id_usuario_instrumento INT AUTO_INCREMENT PRIMARY KEY,
   id_usuario INT,
   id_instrumento INT,
   FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario),
