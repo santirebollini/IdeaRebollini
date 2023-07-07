@@ -278,3 +278,50 @@ UPDATE DatosMercado SET pr_MEP = 150 WHERE id_inst_usuario = 1;
 
 
 
+
+
+
+
+
+
+--Sentencias 
+
+
+-- Usuario SOLO con permisos lectura de todas las tablas
+
+CREATE USER 'usuario_lectura'@'localhost' IDENTIFIED BY 'contraseña_lectura';
+GRANT SELECT ON *.* TO 'usuario_lectura'@'localhost';
+
+-- CREATE USER crea un nuevo usuario llamado 'usuario_lectura' y la contraseña 'contraseña_lectura'. 
+-- GRANT SELECT ON *.* le da al usuario el permiso de lectura (SELECT) de todas las tablas 
+
+
+
+-- Usuario con permisos de lectura, inserción y modificación de datos en todas las tablas
+
+CREATE USER 'usuario_escritura'@'localhost' IDENTIFIED BY 'contraseña_escritura';
+GRANT SELECT, INSERT, UPDATE ON *.* TO 'usuario_escritura'@'localhost';
+
+-- CREATE USER crea otro usuario (ahora llamado 'usuario_escritura') con su contraseña 'contraseña_escritura'
+-- GRANT SELECT, INSERT, UPDATE ON *.* le da al usuario los permisos de: 
+--          Lectura (SELECT)
+-- 			Inserción (INSERT)
+--          Modificación (UPDATE) 
+
+-- NINGUNO PUEDE ELIMINAR (DELETE)
+
+
+
+
+
+
+
+
+
+--TCL
+
+
+
+
+
+
