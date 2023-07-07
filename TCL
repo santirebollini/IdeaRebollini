@@ -1,0 +1,32 @@
+-- Hago uso de la tabla Asesores y Profesores
+
+-- Elimino registro de la tabla Asesores
+
+START TRANSACTION;
+DELETE FROM 
+	Asesores 
+WHERE 
+	id_asesor = 6;
+    
+-- Con START TRANSACTION empiezo esta transacción y con DELETE elimino el registro (en este caso donde id_asesor = 1)
+
+-- ROLLBACK lo uso para "tirar para atrás" una transacción (una especie de ctrl+z)
+-- COMMIT permite confirmar la transacción y la hace permanente
+
+
+-- Agrego 8 registros (generales) en la tabla Profesores
+
+START TRANSACTION;
+INSERT INTO Profesores (nombre, mail, dias_de_clase) VALUES ('Profesor 1', 'profesor1@mail.com', '2023-01-01');
+INSERT INTO Profesores (nombre, mail, dias_de_clase) VALUES ('Profesor 2', 'profesor2@mail.com', '2023-01-02');
+INSERT INTO Profesores (nombre, mail, dias_de_clase) VALUES ('Profesor 3', 'profesor3@mail.com', '2023-01-03');
+INSERT INTO Profesores (nombre, mail, dias_de_clase) VALUES ('Profesor 4', 'profesor4@mail.com', '2023-01-04');
+SAVEPOINT savepoint_1;
+INSERT INTO Profesores (nombre, mail, dias_de_clase) VALUES ('Profesor 5', 'profesor5@mail.com', '2023-01-05');
+INSERT INTO Profesores (nombre, mail, dias_de_clase) VALUES ('Profesor 6', 'profesor6@mail.com', '2023-01-06');
+INSERT INTO Profesores (nombre, mail, dias_de_clase) VALUES ('Profesor 7', 'profesor7@mail.com', '2023-01-07');
+INSERT INTO Profesores (nombre, mail, dias_de_clase) VALUES ('Profesor 8', 'profesor8@mail.com', '2023-01-08');
+SAVEPOINT savepoint_2;
+
+-- RELEASE SAVEPOINT elimina el savepoint. 
+-- De esta forma evito que se elimine el savepoint (savepoint_1) de los primeros 4 registros.
