@@ -1,1 +1,40 @@
+-- FUNCIONES
+
+-- Creo una función que devuelve la fecha de apertura del usuario (según su id)
+
+DELIMITER //
+
+CREATE FUNCTION obtenerFechaApertura(p_id_usuario INT) RETURNS DATE READS SQL DATA
+BEGIN
+    DECLARE v_fecha_apertura DATE;
+
+    SELECT fecha_apertura INTO v_fecha_apertura FROM usuarios WHERE id_usuario = p_id_usuario;
+
+    RETURN v_fecha_apertura;
+END //
+
+DELIMITER ;
+
+SELECT obtenerFechaApertura(5);
+
+
+-- Creo una función que devuelva el nombre del corredor
+
+DELIMITER //
+
+CREATE FUNCTION obtenerNombreCorredor(p_id_corredor INT) RETURNS VARCHAR(100) READS SQL DATA
+BEGIN
+    DECLARE v_nombre_corredor VARCHAR(100);
+
+    SELECT nombre INTO v_nombre_corredor FROM corredores WHERE id_corredor = p_id_corredor;
+
+    RETURN v_nombre_corredor;
+END //
+
+DELIMITER ;
+
+SELECT obtenerNombreCorredor(20);
+
+
+--STORED 
 
