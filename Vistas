@@ -1,0 +1,44 @@
+-- Vista de Usuarios con Detalles de Profesor:
+-- Muestra los usuarios junto con los detalles del profesor asociado a cada uno de ellos
+
+CREATE VIEW VistaUsuariosProfesor AS
+SELECT u.id_usuario, u.nombre, u.mail, u.fecha_apertura, p.nombre AS nombre_profesor
+FROM Usuarios u
+JOIN Profesores p ON u.id_profesor = p.id_profesor;
+
+
+
+-- Vista de Usuarios con Detalles de Corredor
+-- Muestra los usuarios junto con los detalles del corredor asociado a cada uno de ellos
+
+CREATE VIEW VistaUsuariosCorredor AS
+SELECT u.id_usuario, u.nombre, u.mail, u.fecha_apertura, c.nombre AS nombre_corredor
+FROM Usuarios u
+JOIN Corredores c ON u.id_corredor = c.id_corredor;
+
+
+-- Vista de Usuarios con Detalles de Asesor
+-- Muestra los usuarios junto con los detalles del asesor asociado a cada uno de ellos
+
+CREATE VIEW VistaUsuariosAsesor AS
+SELECT u.id_usuario, u.nombre, u.mail, u.fecha_apertura, a.nombre AS nombre_asesor
+FROM Usuarios u
+JOIN Asesores a ON u.id_asesor = a.id_asesor;
+
+
+-- Vista de Datos de Mercado con Usuario
+-- Muestra la información de los usuarios junto con los datos de mercado correspondientes (pr_MEP, pr_acciones y pr_bonos)
+
+CREATE VIEW VistaUsuariosDatosMercado AS
+SELECT u.id_usuario, u.nombre, u.mail, dm.pr_MEP, dm.pr_acciones, dm.pr_bonos
+FROM Usuarios u
+INNER JOIN DatosMercado dm ON u.id_usuario = dm.id_usuario;
+
+
+-- Vista Corredores
+-- Muestra los datos de los corredores
+
+CREATE VIEW VistaCorredores AS
+SELECT id_corredor, nombre, mail
+FROM Corredores;
+
