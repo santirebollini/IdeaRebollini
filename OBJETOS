@@ -36,5 +36,62 @@ DELIMITER ;
 SELECT obtenerNombreCorredor(20);
 
 
+
+
+
+
+
+
 --STORED 
+
+
+
+
+-- Stored Procedure: OrdenarTabla
+-- Ordeno la tabla DatosMercado según el precio ascendente del dólar MEP (pr_MEP)
+
+DELIMITER //
+
+CREATE PROCEDURE OrdenarTabla(p_tabla VARCHAR(100), p_campo VARCHAR(100), p_orden VARCHAR(4))
+BEGIN
+    SET @sql = CONCAT('SELECT * FROM ', p_tabla, ' ORDER BY ', p_campo, ' ', p_orden);
+    PREPARE stmt FROM @sql;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+END //
+
+DELIMITER ;
+
+CALL OrdenarTabla('DatosMercado', 'pr_MEP', 'ASC');
+
+
+
+-- Stored Procedure: InsertarEliminarRegistro
+-- Descripción: Permite insertar o eliminar registros en una tabla.
+-- Parámetros:
+--    - p_opcion: La opción deseada (1 para insertar, 2 para eliminar).
+--    - p_condicion: La condición para eliminar registros en caso de la opción 2.
+DELIMITER //
+
+CREATE PROCEDURE InsertarEliminarRegistro(p_opcion INT, p_tabla VARCHAR(100), p_valores VARCHAR(255), p_condicion VARCHAR(255))
+BEGIN
+    IF p_opcion = 1 THEN
+        SET @sql = CONCAT('INSERT INTO ', p_tabla, ' VALUES (', p_valores, ')');
+        PREPARE stmt FROM @sql;
+        EXECUTE stmt;
+        DEALLOCATE PREPARE stmt;
+    ELSEIF p_opcion = 2 THEN
+        SET @sql = CONCAT('DELETE FROM ', p_tabla, ' WHERE ', p_condicion);
+        PREPARE stmt FROM @sql;
+        EXECUTE stmt;
+        DEALLOCATE PREPARE stmt;
+    END IF;
+END //
+
+DELIMITER ;
+
+CALL InsertarEliminarRegistro(2, 'datosmercado', '', 'pr_bonos > 700')
+
+
+
 
