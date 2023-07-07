@@ -1,0 +1,106 @@
+-- Creo la tabla LogUsuarios para registrar eventos relacionados con estos. 
+-- El trigger AFTER INSERT se activará después de realizar una operación de inserción en la tabla "Usuarios". 
+-- Dentro del trigger, se inserta un nuevo registro en la tabla "LogUsuarios" utilizando la información del nuevo usuario insertado. 
+-- Se captura el id_usuario, el evento realizado ('Inserción de usuario') y la fecha actual (utilizando la función CURDATE()).
+
+CREATE TABLE LogUsuarios (
+    id_log INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT,
+    evento VARCHAR(255),
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario)
+);
+
+
+
+-- Trigger BEFORE en "Usuarios"
+-- Se establece la fecha de apertura del usuario como la fecha actual si no se proporciona. 
+
+DELIMITER //
+CREATE TRIGGER trigger_before_insert_usuarios
+BEFORE INSERT ON Usuarios
+FOR EACH ROW
+BEGIN
+    -- Acción previa a la inserción de datos de un usuario
+    
+    -- Establece la fecha de apertura como la fecha actual si no se proporciona
+    IF NEW.fecha_apertura IS NULL THEN
+        SET NEW.fecha_apertura = CURDATE();
+    END IF;
+END//
+DELIMITER ;
+
+INSERT INTO Usuarios (nombre, mail) VALUES ('John Doe', 'john.doe@example.com');
+
+
+-- Trigger AFTER en "Usuarios"
+-- Registra el evento de inserción de un usuario en la tabla de log "LogUsuarios" después de que se haya insertado un nuevo registro en la tabla "Usuarios"
+
+DELIMITER //
+CREATE TRIGGER trigger_after_insert_usuarios
+AFTER INSERT ON Usuarios
+FOR EACH ROW
+BEGIN
+    -- Acción posterior a la inserción de datos de un usuario
+    
+    -- Registro el evento de inserción en un registro de log
+    INSERT INTO LogUsuarios (id_usuario, evento, fecha) VALUES (NEW.id_usuario, 'Inserción de usuario', NOW());
+END//
+DELIMITER ;
+
+INSERT INTO Usuarios (nombre, mail) VALUES ('Jane Smith', 'jane.smith@example.com');
+
+
+
+-- TRIGGERS en DatosMercado
+
+-- Trigger BEFORE INSERT en "DatosMercado"
+
+DELIMITER //
+CREATE TRIGGER trigger_before_insert_datosmercado
+BEFORE INSERT ON DatosMercado
+FOR EACH ROW
+BEGIN
+    -- Verifica que el usuario y corredor existan en las tablas relacionadas
+    IF NOT EXISTS (SELECT * FROM Usuarios WHERE id_usuario = NEW.id_usuario) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El usuario no existe.';
+    END IF;
+    
+    IF NOT EXISTS (SELECT * FROM Corredores WHERE id_corredor = NEW.id_corredor) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El corredor no existe.';
+    END IF;
+END//
+DELIMITER ;
+
+-- Con Usuario y corredor existentes
+INSERT INTO DatosMercado (id_usuario, id_corredor, pr_MEP, pr_acciones, pr_bonos) VALUES (1, 1, 100, 200, 300);
+
+-- Con Usuario inexistente
+INSERT INTO DatosMercado (id_usuario, id_corredor, pr_MEP, pr_acciones, pr_bonos) VALUES (999, 1, 100, 200, 300);
+
+-- Con Corredor inexistente
+INSERT INTO DatosMercado (id_usuario, id_corredor, pr_MEP, pr_acciones, pr_bonos) VALUES (1, 999, 100, 200, 300);
+
+
+-- Se verifica si el usuario (id_usuario) y el corredor (id_corredor) existen en las tablas relacionadas ("Usuarios" y "Corredores", respectivamente). 
+-- Si alguno de ellos no existe, se generará una señal de error SQLSTATE '45000' con un mensaje de error personalizado.
+
+
+
+
+-- Trigger AFTER UPDATE en "DatosMercado"
+
+DELIMITER //
+CREATE TRIGGER trigger_after_update_datosmercado
+AFTER UPDATE ON DatosMercado
+FOR EACH ROW
+BEGIN
+    -- Actualiza una columna en la tabla "Usuarios" después de una actualización en "DatosMercado"
+    UPDATE Usuarios SET fecha_ultima_actualizacion = NOW() WHERE id_usuario = NEW.id_usuario;
+END//
+DELIMITER ;
+
+-- Se establece la fecha y hora actual (utilizando NOW()) como la nueva fecha de última actualización.
+
+
+UPDATE DatosMercado SET pr_MEP = 150 WHERE id_inst_usuario = 1;
